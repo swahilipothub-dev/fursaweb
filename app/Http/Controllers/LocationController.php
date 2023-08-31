@@ -7,9 +7,6 @@ use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $location = Location::all();
@@ -17,16 +14,6 @@ class LocationController extends Controller
         return response()->json($location);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -38,23 +25,6 @@ class LocationController extends Controller
         return response()->json($location, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Location $location)
-    {
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Location $location)
-    {
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Location $location)
     {
         $request->validate([
@@ -66,9 +36,6 @@ class LocationController extends Controller
         return response()->json($location);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Location $location)
     {
         $location->delete();

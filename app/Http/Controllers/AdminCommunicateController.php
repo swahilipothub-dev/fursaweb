@@ -39,14 +39,9 @@ class AdminCommunicateController extends Controller
         } elseif ($group === 'seeker') {
             $contacts = Seeker::pluck('phone')->all();
         } else {
-            // Invalid group value
             return back()->with('error', 'Invalid group selected');
         }
 
-        // dd($contacts, $message);
-        
-        //-> send to each contacts independently
-        
         $response = null;
         
         foreach($contacts as $contact){
@@ -67,7 +62,7 @@ class AdminCommunicateController extends Controller
         $payload = [
             "userid" => $this->userId,
             "password" => $this->passkey,
-            "mobile" =>$contacts,//implode(',', $contacts),
+            "mobile" =>$contacts,
             "msg" => $message,
             "senderid" => $this->senderId,
             "msgType" => $this->msgType,
@@ -76,7 +71,7 @@ class AdminCommunicateController extends Controller
             "sendMethod" => $this->sendMethod
         ];
 
-         $ch = curl_init();
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($payload));
@@ -91,23 +86,13 @@ class AdminCommunicateController extends Controller
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        // print_r($response);
-        // exit();
-
        if ($httpCode == 200) {
-            
-                // $this->recordSmsSent($contacts, $message, $groupid, $no_contacts);
-                echo $response;
-           
+            echo $response;
             return true;
         } else {
             echo "Request failed with status code: " . $httpCode;
             return false;
         }
     }
-
-    protected function recordSmsSent($contacts, $message, $groupid, $no_contacts)
-    {
-        // Implement recording of sent SMS to the database
-    }
+    
 }

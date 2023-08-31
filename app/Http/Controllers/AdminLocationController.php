@@ -8,38 +8,25 @@ use Illuminate\Support\Facades\DB;
 
 class AdminLocationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $locations = Location::all();
 
-    foreach ($locations as $location) {
-        $location->in_use = DB::table('companies')
-            ->where('location_id', $location->id)
-            ->orWhereExists(function ($query) use ($location) {
-                $query->select(DB::raw(1))
-                    ->from('jobs')
-                    ->whereRaw('jobs.location_id = companies.location_id')
-                    ->where('jobs.location_id', $location->id);
-            })
-            ->exists();
+        foreach ($locations as $location) {
+            $location->in_use = DB::table('companies')
+                ->where('location_id', $location->id)
+                ->orWhereExists(function ($query) use ($location) {
+                    $query->select(DB::raw(1))
+                        ->from('jobs')
+                        ->whereRaw('jobs.location_id = companies.location_id')
+                        ->where('jobs.location_id', $location->id);
+                })
+                ->exists();
+        }
+
+        return view('admin.settings.location', compact('locations'));
     }
 
-    return view('admin.settings.location', compact('locations'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -51,23 +38,6 @@ class AdminLocationController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Location $location)
-    {
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Location $location)
-    {
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Location $location)
     {
         $request->validate([
@@ -79,17 +49,11 @@ class AdminLocationController extends Controller
        return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    
+    public function delete(Request $request, $id)
+    {
+        $location = Location::findOrFail($id);
+        $location->delete();
 
-     public function delete(Request $request, $id)
-{
-    $location = Location::findOrFail($id);
-    $location->delete();
-
-    // Redirect back to the page
-    return redirect()->back();
-}
+        return redirect()->back();
+    }
 }

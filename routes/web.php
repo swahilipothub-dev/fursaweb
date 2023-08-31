@@ -1,32 +1,28 @@
 <?php
+
+use App\Http\Controllers\AdminCommunicateController;
+use App\Http\Controllers\AdminCompanyTypeController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminHighestLevelController;
+use App\Http\Controllers\AdminInterestController;
+use App\Http\Controllers\AdminJobController;
+use App\Http\Controllers\AdminLocationController;
+use App\Http\Controllers\AdminReportController;
+use App\Http\Controllers\AdminSkillController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\JobController;
-use App\Http\Controllers\AdminJobController;
-use App\Http\Controllers\SkillController;
-use App\Http\Controllers\CompanyTypeController;
-use App\Http\Controllers\InterestController;
-use App\Http\Controllers\HighestLevelController;
-use App\Http\Controllers\LocationController;
-use App\Http\Controllers\AdminSkillController;
-use App\Http\Controllers\AdminCompanyTypeController;
-use App\Http\Controllers\AdminInterestController;
-use App\Http\Controllers\AdminHighestLevelController;
-use App\Http\Controllers\AdminLocationController;
 use App\Http\Controllers\PartnerApplicationController;
-use App\Http\Controllers\AdminReportController;
-use App\Http\Controllers\AdminCommunicateController;
-use App\Http\Controllers\SeekerController;
 use App\Http\Controllers\ResumeController;
+use App\Http\Controllers\SeekerController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
-    Route::prefix('auth')->group(function () {
+Route::prefix('auth')->group(function () {
     Route::get('register', [AuthController::class, 'register'])->name('register');
     Route::post('register', [AuthController::class, 'registerSave'])->name('register.save');
 
@@ -37,9 +33,9 @@ Route::get('/', function () {
 // Routes accessible only after successful registration
 Route::middleware(['auth', 'checkRegistrationStatus'])->group(function () {
     Route::middleware(['checkApprovalStatus'])->group(function () {
-        Route::get('/profile', [AuthController::class, 'accountinfo'])->name('profile');
-        Route::post('/profile', [AuthController::class, 'updatepartner'])->name('profile');
-       Route::post('/update-picture', [AuthController::class, 'updateProfilePicture'])->name('profile.updatepic');
+        Route::get('/profile', [AuthController::class, 'accountInfo'])->name('profile');
+        Route::post('/profile', [AuthController::class, 'updatePartner'])->name('profile');
+        Route::post('/update-picture', [AuthController::class, 'updateProfilePicture'])->name('profile.updatepic');
 
         Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
         Route::get('/jobs/create', [JobController::class, 'jobFormView'])->name('jobs.create.view');
@@ -53,20 +49,11 @@ Route::middleware(['auth', 'checkRegistrationStatus'])->group(function () {
         Route::get('/jobs/applications', [JobController::class, 'jobApplication'])->name('jobs.applications');
 
         Route::get('/seekers', [SeekerController::class, 'index'])->name('seekers.index');
-        
-        
 
-      Route::get('/jobs/profileaplicant/{id}/{applicationId}', [SeekerController::class, 'seekerProfilePartner'])->name('jobs.profileaplicant');
-
-     
-         
-         
-        
- 
+        Route::get('/jobs/profileaplicant/{id}/{applicationId}', [SeekerController::class, 'seekerProfilePartner'])->name('jobs.profileaplicant');
     });
 });
 
- 
 // Routes accessible only to admins
 Route::middleware(['auth', 'checkAdminRole'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
@@ -74,8 +61,8 @@ Route::middleware(['auth', 'checkAdminRole'])->group(function () {
     Route::post('/admin/deactivate/{userId}', [AuthController::class, 'deactivateUser'])->name('admin.deactivateUser');
     Route::post('/admin/rejectuser/{userId}', [AuthController::class, 'rejectUser'])->name('admin.rejectUser');
 
- Route::get('/admin/profile', [AuthController::class, 'adminaccountinfo'])->name('admin.profile');
-    Route::post('/admin/profile', [AuthController::class, 'updateadmin'])->name('admin.profile.update');
+    Route::get('/admin/profile', [AuthController::class, 'adminAccountInfo'])->name('admin.profile');
+    Route::post('/admin/profile', [AuthController::class, 'updateAdmin'])->name('admin.profile.update');
     Route::post('/admin/update-picture', [AuthController::class, 'updateAdminProfilePicturea'])->name('adminprofile.updatepic');
 
     Route::get('/admin/jobs/create', [AdminJobController::class, 'jobFormView'])->name('admin.jobs.create.view');
@@ -85,12 +72,9 @@ Route::middleware(['auth', 'checkAdminRole'])->group(function () {
     Route::get('/admin/jobs/{job}/edit', [AdminJobController::class, 'edit'])->name('admin.jobs.edit');
     Route::put('/admin/jobs/{job}', [AdminJobController::class, 'update'])->name('admin.jobs.update');
     Route::delete('/admin/jobs/{job}', [AdminJobController::class, 'destroy'])->name('admin.jobs.destroy');
-    
 
     Route::get('/jobs/seekerapply/{id}/{applicationId}', [SeekerController::class, 'seekerProfileAdmin'])->name('admin.jobs.seekerapply');
     Route::put('job-applications/{jobApplicationId}/status', [SeekerController::class, 'updateJobApplicationStatus'])->name('adminJobApplication.status');
-     
-
 
     Route::get('/admin/jobs/applications', [AdminJobController::class, 'jobApplication'])->name('admin.jobs.applications');
 
@@ -125,22 +109,21 @@ Route::middleware(['auth', 'checkAdminRole'])->group(function () {
     Route::post('/communicate/message', [AdminCommunicateController::class, 'sendSms'])->name('communicate.sms');
     Route::get('/report/report', [AdminReportController::class, 'index'])->name('report.report');
     Route::get('/manage/profile/{id}', [PartnerApplicationController::class, 'profile'])->name('manage.profile');
-
-
 });
 
-    // Routes accessible to both non-admin and admin users
-    Route::post('/seeker/profile', [SeekerController::class, 'setupProfile']);
-    Route::get('/jobs', [SeekerController::class, 'getAllJobs'])->name('jobs');
-    Route::post('/jobApplications', [SeekerController::class, 'applyForJob'])->name('applyForJob');
-    Route::get('/jobApplications/{jobId}', [JobController::class, 'getJobApplications'])->name('jobApplications');
-    Route::put('job-applications/{jobApplicationId}/status', [SeekerController::class, 'updateJobApplicationStatuspartner'])->name('JobApplicationupdate.status');
-    // Route for pending approval page
-    Route::middleware(['auth'])->group(function () { Route::get('/auth/pending-approval', 
-    function () { return view('auth.pending'); })->name('auth.pending');});
+// Routes accessible to both non-admin and admin users
+Route::post('/seeker/profile', [SeekerController::class, 'setupProfile']);
+Route::get('/jobs', [SeekerController::class, 'getAllJobs'])->name('jobs');
+Route::post('/jobApplications', [SeekerController::class, 'applyForJob'])->name('applyForJob');
+Route::get('/jobApplications/{jobId}', [JobController::class, 'getJobApplications'])->name('jobApplications');
+Route::put('job-applications/{jobApplicationId}/status', [SeekerController::class, 'updateJobApplicationStatusPartner'])->name('JobApplicationupdate.status');
 
-    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-    
-     
-     
-     Route::get('/resumes/{filename}', [ResumeController::class, 'show'])->name('resume.show');
+// Route for pending approval page
+Route::middleware(['auth'])->group(function () {
+    Route::get('/auth/pending-approval',
+        function () { return view('auth.pending'); })->name('auth.pending');
+});
+
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/resumes/{filename}', [ResumeController::class, 'show'])->name('resume.show');

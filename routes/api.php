@@ -46,22 +46,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/jobApplications', [SeekerController::class, 'applyForJob']);
     Route::get('/jobApplications', [SeekerController::class, 'getJobApplications']);
     Route::get('/jobs/applied/', [JobController::class, 'getAppliedJobsBySeeker']);
+    Route::delete('/seeker/delete-account', [SeekerController::class, 'deleteAccount']);
     
-    //  Route::get('/seeker/profile', [SeekerController::class, 'getSeekerProfile']);
-    // Route::post('/seeker/profile', [SeekerController::class, 'updateSeekerProfile']);
 });
-// Route::put('/jobs/{jobId}/status', 'JobController@updateJobStatus');
-// Route::put('/jobs/{jobId}/status', [JobController::class, 'updateJobStatus']);
-// Route::get('/seekers/{seekerId}/applied-jobs', 'JobController@getAppliedJobsBySeeker');
-// Route::get('/seekers/{seekerId}/applied-jobs', 'JobController@getAppliedJobsBySeeker');
-// Route::get('/jobs/applied/{seekerId}', [JobController::class, 'getAppliedJobsBySeeker']);
 Route::put('/jobs/{jobId}/status', [JobController::class, 'updateJobStatus']);
 
 Route::put('/jobs/{jobId}/toggle', [JobController::class, 'toggleStatus']);
 
-// Route::put('/applications/{applicationId}/status', [JobController::class, 'changeApplicationStatus']);
-
-// Route::put('/job-applications/{applicationId}/status', [JobController::class, 'updateApplicationStatus']);
 Route::put('job-applications/{jobApplicationId}/status', [SeekerController::class, 'updateJobApplicationStatus']);
 
 Route::get('/jobs/relevant', [JobController::class, 'relevantJobs']);

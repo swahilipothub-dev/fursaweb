@@ -14,10 +14,6 @@ class SkillController extends Controller
         return response()->json($skills);
     }
 
-    public function create()
-    {
-    }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -32,10 +28,6 @@ class SkillController extends Controller
     public function show(Skill $skill)
     {
         return response()->json($skill);
-    }
-
-    public function edit(Skill $skill)
-    {
     }
 
     public function update(Request $request, Skill $skill)

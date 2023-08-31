@@ -13,7 +13,6 @@ class CheckAdminRole
             return $next($request);
         }
 
-        // Redirect or return response for non-admin users
         return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
     }
 }

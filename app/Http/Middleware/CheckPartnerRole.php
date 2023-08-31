@@ -9,7 +9,6 @@ class CheckPartnerRole
 {
     public function handle(Request $request, Closure $next)
     {
-        // Check if the logged-in user has the partner role
         if (auth()->check() && auth()->user()->level === 'partner') {
             return $next($request);
         }

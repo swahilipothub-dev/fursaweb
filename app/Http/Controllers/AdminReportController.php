@@ -16,58 +16,52 @@ class AdminReportController extends Controller
      public function index()
     {
         
-    $jobCount = Job::count();
-    $userCount = User::where('level', '!=', 'admin')->count();
-    $seekerCount = Seeker::count();
-    $partnerCount = User::where('level', 'partner')->count();
-    $applicationCount = JobApplication::count();
-    $approvedApplicationCount = JobApplication::where('status', 'accepted')->count();
-    $rejectedApplicationCount = JobApplication::where('status', 'rejected')->count();
+        $jobCount = Job::count();
+        $userCount = User::where('level', '!=', 'admin')->count();
+        $seekerCount = Seeker::count();
+        $partnerCount = User::where('level', 'partner')->count();
+        $applicationCount = JobApplication::count();
+        $approvedApplicationCount = JobApplication::where('status', 'accepted')->count();
+        $rejectedApplicationCount = JobApplication::where('status', 'rejected')->count();
 
-    $popularSkills = DB::table('skills')
-    ->leftJoin('seeker_skills', 'skills.id', '=', 'seeker_skills.skill_id')
-    ->select('skills.skill', DB::raw('COUNT(seeker_skills.seeker_id) as seekers_count'))
-    ->groupBy('skills.skill')
-    ->orderByDesc('seekers_count')
-    ->get();
+        $popularSkills = DB::table('skills')
+        ->leftJoin('seeker_skills', 'skills.id', '=', 'seeker_skills.skill_id')
+        ->select('skills.skill', DB::raw('COUNT(seeker_skills.seeker_id) as seekers_count'))
+        ->groupBy('skills.skill')
+        ->orderByDesc('seekers_count')
+        ->get();
 
-$popularJobLocations = DB::table('jobs')
-    ->join('locations', 'jobs.location_id', '=', 'locations.id')
-    ->select('locations.name', DB::raw('COUNT(*) as count'))
-    ->groupBy('locations.name')
-    ->orderByDesc('count')
-    ->get();
+        $popularJobLocations = DB::table('jobs')
+            ->join('locations', 'jobs.location_id', '=', 'locations.id')
+            ->select('locations.name', DB::raw('COUNT(*) as count'))
+            ->groupBy('locations.name')
+            ->orderByDesc('count')
+            ->get();
 
- 
-$popularSeekerLocations = DB::table('seeker_locations')
-    ->join('locations', 'seeker_locations.location_id', '=', 'locations.id')
-    ->select('locations.name', DB::raw('COUNT(*) as count'))
-    ->groupBy('locations.name')
-    ->orderByDesc('count')
-    ->get();
+    
+        $popularSeekerLocations = DB::table('seeker_locations')
+            ->join('locations', 'seeker_locations.location_id', '=', 'locations.id')
+            ->select('locations.name', DB::raw('COUNT(*) as count'))
+            ->groupBy('locations.name')
+            ->orderByDesc('count')
+            ->get();
 
-   
+        $data = [
+            'jobCount' => $jobCount,
+            'userCount' => $userCount,
+            'seekerCount' => $seekerCount,
+            'partnerCount' => $partnerCount,
+            'applicationCount' => $applicationCount,
+            'approvedApplicationCount' => $approvedApplicationCount,
+            'rejectedApplicationCount' => $rejectedApplicationCount,
+            'popularSkills' => $popularSkills,
+            
+            'popularJobLocations' => $popularJobLocations,
+            'popularSeekerLocations' => $popularSeekerLocations,
+            
+        ];
 
-
-    $data = [
-        'jobCount' => $jobCount,
-        'userCount' => $userCount,
-        'seekerCount' => $seekerCount,
-        'partnerCount' => $partnerCount,
-        'applicationCount' => $applicationCount,
-        'approvedApplicationCount' => $approvedApplicationCount,
-        'rejectedApplicationCount' => $rejectedApplicationCount,
-        'popularSkills' => $popularSkills,
-        
-        'popularJobLocations' => $popularJobLocations,
-        'popularSeekerLocations' => $popularSeekerLocations,
-        
-    ];
-
-    return view('admin.report.report', $data);
-
-        
-        // return view('admin.report.report');
+        return view('admin.report.report', $data);
         
     }
 }

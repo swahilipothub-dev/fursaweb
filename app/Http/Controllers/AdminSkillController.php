@@ -12,23 +12,19 @@ class AdminSkillController extends Controller
     {
         $skills = Skill::all();
 
-    foreach ($skills as $skill) {
-        $skill->in_use = DB::table('seeker_skills')
-            ->where('skill_id', $skill->id)
-            ->orWhereExists(function ($query) use ($skill) {
-                $query->select(DB::raw(1))
-                    ->from('job_skills')
-                    ->whereRaw('job_skills.skill_id = seeker_skills.skill_id')
-                    ->where('job_skills.skill_id', $skill->id);
-            })
-            ->exists();
-    }
+        foreach ($skills as $skill) {
+            $skill->in_use = DB::table('seeker_skills')
+                ->where('skill_id', $skill->id)
+                ->orWhereExists(function ($query) use ($skill) {
+                    $query->select(DB::raw(1))
+                        ->from('job_skills')
+                        ->whereRaw('job_skills.skill_id = seeker_skills.skill_id')
+                        ->where('job_skills.skill_id', $skill->id);
+                })
+                ->exists();
+        }
 
-    return view('admin.settings.skills', compact('skills'));;
-    }
-
-    public function create()
-    {
+        return view('admin.settings.skills', compact('skills'));;
     }
 
     public function store(Request $request)
@@ -47,10 +43,6 @@ class AdminSkillController extends Controller
         return response()->json($skill);
     }
 
-    public function edit(Skill $skill)
-    {
-    }
-
     public function update(Request $request, Skill $skill)
     {
         $request->validate([
@@ -62,14 +54,11 @@ class AdminSkillController extends Controller
         return redirect()->back();
     }
 
-   
+    public function delete(Request $request, $id)
+    {
+        $skill = Skill::findOrFail($id);
+        $skill->delete();
 
-     public function delete(Request $request, $id)
-{
-    $skill = Skill::findOrFail($id);
-    $skill->delete();
-
-    // Redirect back to the page
-    return redirect()->back();
-}
+        return redirect()->back();
+    }
 }

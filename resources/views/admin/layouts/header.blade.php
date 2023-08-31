@@ -87,7 +87,7 @@
                             </li>
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="javascript:void(0)" role="button" data-bs-toggle="dropdown">
-                                    <img src="{{asset('front/images/swahili.png')}}" width="50" alt=""/>
+                                    <img src="<?php echo url('storage/app/public/profile_picture/' . auth()->user()->company->profile_pic); ?>" width="50" alt=""/>
 									<div class="header-info">
 										<span class="text-black">{{ auth()->user()->name }}</span>
 										<!-- <p class="fs-12 mb-0">Super Admin</p> -->

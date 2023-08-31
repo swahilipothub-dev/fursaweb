@@ -1,7 +1,9 @@
 @extends('admin.layouts.app')
 
 @section('content')
-<div class="container" style="margin-top: 100px;">
+<div class="content-body">
+            <!-- row -->
+            <div class="container-fluid">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
@@ -80,5 +82,6 @@
 
         </div>
     </div>
+</div>
 </div>
 @endsection

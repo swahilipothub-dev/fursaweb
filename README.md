@@ -1,66 +1,108 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# JOB PORTAL WEB SYSTEM
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## About the web application;
+This is a web application which has two different level of users; the super admin and the employers, and the third level of users is the job seeker who uses the mobile application to view jobs and make job applications
 
-## About Laravel
+### Key Features of this application;
+### For the Employers/Partners
+1. Manage job applications;
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+    - Approve or Reject job applications
+    - View job applications and details of the job applicants including downloading resumes
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+2. Create jobs
+3. Manage Jobs
+    - Edit / Delete jobs
+    - Change the status of a job/deactivate: open or close
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+### For the Admin/Super Admin
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. All the features above
+2. Approve/reject applications to join the platform that are made by the employeers/partners
+3. Add location, skills, interests, employer/partner types, education levels (details used by employers and job seekers when making applications and updating their profiles)
+4. View sysem reports, i.e user demographics etc.
+5. Send Bulk SMS notifications
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Mobile/Web App Endpoints
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+The following are the endpoints for the Mobile Application;
 
-## Laravel Sponsors
+###  User login: POST '/api/seeker/login'
+        { "phone": " ", "password": " " }
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### User registration: POST '/api/seeker/register'
+        { 
+            "first_name": " ", 
+            "last_name": " ", 
+            "phone": " ", 
+            "password": " ", 
+            "email": "" 
+        }
 
-### Premium Partners
+### User profile setup and editing: POST '/api/seeker/profile' 
+// you must pass authorization bearer token generated when login or registration of the user is succesful in the headers
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+        {
+            "date_of_birth": " ",
+            "id_number": " ",
+            "location_id": ,
+            "highest_level_id": ,
+            "school": " ",
+            "skill_id": [ ],
+            "interest_id": [ ],
+            "year_of_completion": " ",
+            "resume" : " "
+        }
 
-## Contributing
+### Get All Jobs: GET 'api/jobs'
+// you must pass authorization bearer token generated when login or registration of the user is succesful in the headers 
+### User applying for a job: POST '/api/jobApplications' 
+// you must pass authorization bearer token generated when login or registration of the user is succesful in the headers 
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+        {
+            "job_id" : ,
+            "cv_file" : " "
+        }
 
-## Code of Conduct
+### Get jobs applied by the user: GET '/api/jobs/applied'
+ // you must pass authorization bearer token generated when login or registration of the user is succesful in the headers to get the jobs applied by the authenticated/logged in user
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Request Password Reset OTP: POST '/api/password-reset/request'
+        {
+            "phone" : "Phone Number"
+        }
 
-## Security Vulnerabilities
+### Reset Password : POST '/api/password-reset/reset'
+        {
+            "phone" : "Phone Number",    
+            "otp" : "generated otp",   
+            "password" : "New Password",
+        }
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### The following endpoints are for the user to select from the respective field while setting up their profiles
+### 1. Get all Locations: GET '/api/location'
 
-## License
+// you must pass authorization bearer token generated when login or registration of the user is succesful in the headers 
+### 2. Get all Skills: GET '/api/skills'
+// you must pass authorization bearer token generated when login or registration of the user is succesful in the headers 
+### 3. Get all Highest Level: GET '/api/highestLevel
+// you must pass authorization bearer token generated when login or registration of the user is succesful in the headers 
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 4. Get all Interests: GET '/api/interest'
+// you must pass authorization bearer token generated when login or registration of the user is succesful in the headers 
+
+## Setting up and running the application:
+Assuming you have already set up the Laravel environment (if not, please refer to the documentation at laravel.com for guidance), follow these steps:
+
+    - Clone this repository using Git.
+    - Create the .env file and configure the database settings.
+    - Run 'composer install' to download the required packages and libraries.
+    - Run 'php artisan migrate' to set up the database migrations.
+    - Run 'php artisan key:generate' to generate the application key.
+    - Run 'php artisan db:seed' to seed the database.
+    - Finally, run 'php artisan serve' to start the application. The application will run on port 8000. Open your browser and enter 'http://127.0.0.1:8000/'
+
+#### Trial login details can be found in the 'DatabaseSeeder.php' file located in the '/database/seeders' directory.
+I hope this information is helpful to you in some way. 
+
