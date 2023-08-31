@@ -79,6 +79,9 @@ The following are the endpoints for the Mobile Application;
             "otp" : "generated otp",   
             "password" : "New Password",
         }
+        
+### Delete the USser account: POST '/api/seeker/delete-account'
+ // you must pass authorization bearer token generated when login or registration of the user is succesful in the headers to get the jobs applied by the authenticated/logged in user
 
 ### The following endpoints are for the user to select from the respective field while setting up their profiles
 ### 1. Get all Locations: GET '/api/location'
@@ -105,4 +108,3 @@ Assuming you have already set up the Laravel environment (if not, please refer t
 
 #### Trial login details can be found in the 'DatabaseSeeder.php' file located in the '/database/seeders' directory.
 I hope this information is helpful to you in some way. 
-
