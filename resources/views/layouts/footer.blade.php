@@ -3,7 +3,7 @@
         ***********************************-->
         <div class="footer">
             <div class="copyright">
-                <p>Copyright © Fursa &amp; Developed by <a href="http://brancetech.com/" target="_blank">BranceTech</a> 2023</p>
+                <p>Copyright © Fursa &amp; Developed and Maintained by <a href="http://brancetech.com/" target="_blank">Swahilipot Hub Foundation</a> 2023</p>
             </div>
         </div>
         <!--**********************************

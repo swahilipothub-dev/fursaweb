@@ -34,7 +34,7 @@
             <div class="text-center">
               <img src="{{ asset('front/images/fursa.png') }}" alt="Logo" height="100" class="mb-4">
               <hr>
-              <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+              <h1 class="h4 text-gray-900 mb-4">Karibu Tena!</h1>
             </div>
             <form action="{{ route('login.action') }}" method="POST" class="user">
               @csrf
