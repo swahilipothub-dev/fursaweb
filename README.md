@@ -40,7 +40,19 @@ The following are the endpoints for the Mobile Application;
             "email": "" 
         }
 
+### User bio update: PUT '/api/seeker/bioUpdate'
+//any of the following inputs are optional, one can update one or all or any of the inputs below using this endpoint.
+
+        { 
+            "first_name": " ", 
+            "last_name": " ", 
+            "phone": " ", 
+            "password": " ", 
+            "email": "" 
+        }
+
 ### User profile setup and editing: POST '/api/seeker/profile' 
+### optionally update details using: PUT '/api/seeker/profileUpdate'
 // you must pass authorization bearer token generated when login or registration of the user is succesful in the headers
 
         {
@@ -79,9 +91,6 @@ The following are the endpoints for the Mobile Application;
             "otp" : "generated otp",   
             "password" : "New Password",
         }
-        
-### Delete the USser account: POST '/api/seeker/delete-account'
- // you must pass authorization bearer token generated when login or registration of the user is succesful in the headers to get the jobs applied by the authenticated/logged in user
 
 ### The following endpoints are for the user to select from the respective field while setting up their profiles
 ### 1. Get all Locations: GET '/api/location'
@@ -108,3 +117,7 @@ Assuming you have already set up the Laravel environment (if not, please refer t
 
 #### Trial login details can be found in the 'DatabaseSeeder.php' file located in the '/database/seeders' directory.
 I hope this information is helpful to you in some way. 
+
+### If you would like to collaborate, have any questions or feedback, or 'don't know how to exit Vim', please reach out to me at ianyakundi015@gmail.com.
+
+## See you on the other edge of the terminal!

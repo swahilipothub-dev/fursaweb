@@ -5,11 +5,11 @@ use App\Http\Controllers\HighestLevelController;
 use App\Http\Controllers\InterestController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\SeekerController;
 use App\Http\Controllers\SkillController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PasswordResetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +30,8 @@ Route::post('/seeker/login', [SeekerController::class, 'loginAction']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/seeker/profile', [SeekerController::class, 'setupProfile']);
+    Route::put('seeker/profileUpdate', [SeekerController::class, 'updateSeekerProfile']);
+    Route::put('seeker/bioUpdate', [SeekerController::class, 'updateRegisterSave']);
     Route::get('/jobs', [SeekerController::class, 'getAllJobs']);
     Route::post('/skills', [SkillController::class, 'store']);
     Route::get('/skills', [SkillController::class, 'index']);
@@ -47,7 +49,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/jobApplications', [SeekerController::class, 'getJobApplications']);
     Route::get('/jobs/applied/', [JobController::class, 'getAppliedJobsBySeeker']);
     Route::delete('/seeker/delete-account', [SeekerController::class, 'deleteAccount']);
-    
 });
 Route::put('/jobs/{jobId}/status', [JobController::class, 'updateJobStatus']);
 

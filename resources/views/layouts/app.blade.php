@@ -14,7 +14,7 @@
     <meta name="format-detection" content="telephone=no">
     
     <!-- PAGE TITLE HERE -->
-    <title>Fursa - Mombasa County Jobs Board</title>
+    <title>Fursa - Joboard System</title>
     <!-- Favicon icon -->
     <link href="{{ asset('front/css/style.css') }}" rel="stylesheet">
     <link rel="icon" type="image/png" sizes="16x16" href="front/images/favicon.png">

@@ -93,6 +93,56 @@ class SeekerController extends Controller
         return response()->json(['message' => 'Registration successful', 'seeker' => $seeker, 'token' => $token]);
     }
 
+    public function updateRegisterSave(Request $request): JsonResponse
+    {
+        $seeker = Auth::user();
+
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'sometimes',
+            'last_name' => 'sometimes',
+            'phone' => 'sometimes|numeric|unique:seekers,phone,'.$seeker->id,
+            'password' => 'nullable',
+            'email' => 'sometimes|email|unique:seekers,email,'.$seeker->id,
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation Error', 'errors' => $validator->errors()], 422);
+        }
+
+        $data = [];
+
+        if ($request->has('first_name')) {
+            $data['first_name'] = $request->first_name;
+        }
+
+        if ($request->has('last_name')) {
+            $data['last_name'] = $request->last_name;
+        }
+
+        if ($request->has('phone')) {
+            $data['phone'] = $request->phone;
+        }
+
+        if ($request->has('password') && $request->password !== null) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        if ($request->has('email')) {
+            $data['email'] = $request->email;
+        }
+
+        $seeker->update($data);
+
+        $responseData = [
+            'message' => 'Success, Bio Updated Successfully',
+            'data' => [
+                'seeker' => $seeker,
+            ],
+        ];
+
+        return response()->json($responseData);
+    }
+
     public function loginAction(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
