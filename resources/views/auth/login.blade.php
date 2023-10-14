@@ -63,7 +63,7 @@
             </form>
             <hr>
             <div class="text-center">
-              <a class="small" href="{{ route('register') }}">Create an Account!</a>
+              <a class="small" href="{{ route('register') }}">Register as a Partner</a>
             </div>
           </div>
         </div>
