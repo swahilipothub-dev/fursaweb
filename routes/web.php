@@ -22,13 +22,33 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+Route::get('/seeker', function () {
+    return view('seekers-auth.login');
+});
+
 Route::prefix('auth')->group(function () {
     Route::get('register', [AuthController::class, 'register'])->name('register');
     Route::post('register', [AuthController::class, 'registerSave'])->name('register.save');
 
     Route::get('login', [AuthController::class, 'login'])->name('login');
     Route::post('login', [AuthController::class, 'loginAction'])->name('login.action');
+
+    // seeker
+    Route::get('seeker/register', [SeekerController::class, 'registerSeeker'])->name('seekerRegister');
+    Route::post('seeker/register', [SeekerController::class, 'registerSave'])->name('seekerRegister.save');
+
+    Route::get('seeker/login', [SeekerController::class, 'login'])->name('seekerLogin');
+    Route::post('seeker/login', [SeekerController::class, 'loginAction'])->name('seekerLogin.action');
+
+
 });
+
+Route::get('seeker/dashboard', [HomeController::class, 'seekerIndex'])->name('seeker-dashboard');
+
+Route::get('/seeker/jobs', [SeekerController::class, 'jobFormView'])->name('admin.jobs.create.view');
+
+Route::get('/jobs', [SeekerController::class, 'getAllJobs'])->name('seekerAllJobs');
+
 
 // Routes accessible only after successful registration
 Route::middleware(['auth', 'checkRegistrationStatus'])->group(function () {
@@ -38,6 +58,7 @@ Route::middleware(['auth', 'checkRegistrationStatus'])->group(function () {
         Route::post('/update-picture', [AuthController::class, 'updateProfilePicture'])->name('profile.updatepic');
 
         Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+        
         Route::get('/jobs/create', [JobController::class, 'jobFormView'])->name('jobs.create.view');
         Route::get('/jobs/show', [JobController::class, 'show'])->name('jobs.show');
         Route::post('/jobs', [JobController::class, 'create'])->name('jobs.create');

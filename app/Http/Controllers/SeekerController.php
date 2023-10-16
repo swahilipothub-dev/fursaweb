@@ -24,12 +24,17 @@ class SeekerController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except(['register', 'registerSave', 'login', 'loginAction']);
+        $this->middleware('auth:sanctum')->except(['register', 'registerSave', 'login', 'loginAction', 'registerSeeker']);
     }
 
     public function register()
     {
         return response()->json(['message' => 'nuku successful']);
+    }
+
+    public function registerSeeker()
+    {
+        return view('seekers-auth.register');
     }
 
     public function seekerProfilePartner($id, $applicationId)
@@ -90,7 +95,10 @@ class SeekerController extends Controller
 
         $token = $seeker->createToken('auth-token')->plainTextToken;
 
-        return response()->json(['message' => 'Registration successful', 'seeker' => $seeker, 'token' => $token]);
+        return response()->json(['message' => 'Registration successful', 'seeker' => $seeker, 'token' => $token])
+            ->view('seekers-auth.login');
+
+
     }
 
     public function updateRegisterSave(Request $request): JsonResponse
@@ -161,7 +169,12 @@ class SeekerController extends Controller
         $seeker = Auth::guard('seeker')->user();
         $token = $seeker->createToken('auth-token')->plainTextToken;
 
-        return response()->json(['message' => 'Login successful', 'seeker' => $seeker, 'token' => $token]);
+        return response()->json(['message' => 'Login successful', 'seeker' => $seeker, 'token' => $token])
+            ->view('seekers-auth.login');
+
+        // return response()
+        // ->json(['message' => 'Login successful', 'seeker' => $seeker, 'token' => $token])
+        // ->view('seekers.index');
     }
 
     public function logout(Request $request)
