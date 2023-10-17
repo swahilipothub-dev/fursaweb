@@ -37,6 +37,11 @@ class SeekerController extends Controller
         return view('seekers-auth.register');
     }
 
+    public function seekerRegView()
+    {
+        return view('seekers-auth.login');
+    }
+
     public function seekerProfilePartner($id, $applicationId)
     {
         $seeker = Seeker::find($id);
@@ -71,6 +76,33 @@ class SeekerController extends Controller
         return view('admin.jobs.seekerapply', compact('seeker', 'profile', 'level', 'skills', 'interests', 'status', 'applicationId'));
     }
 
+    // public function registerSave(Request $request): JsonResponse
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'first_name' => 'required',
+    //         'last_name' => 'required',
+    //         'phone' => 'required|numeric|unique:seekers',
+    //         'password' => 'required',
+    //         'email' => 'required|email|unique:seekers',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json(['error' => $validator->errors()], 422);
+    //     }
+
+    //     $seeker = Seeker::create([
+    //         'first_name' => $request->first_name,
+    //         'last_name' => $request->last_name,
+    //         'phone' => $request->phone,
+    //         'password' => Hash::make($request->password),
+    //         'email' => $request->email,
+    //     ]);
+
+    //     $token = $seeker->createToken('auth-token')->plainTextToken;
+
+    //     return response()->json(['message' => 'Registration successful', 'seeker' => $seeker, 'token' => $token])
+    //         ->view('seekers-auth.login');
+    // }
     public function registerSave(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
@@ -95,10 +127,8 @@ class SeekerController extends Controller
 
         $token = $seeker->createToken('auth-token')->plainTextToken;
 
-        return response()->json(['message' => 'Registration successful', 'seeker' => $seeker, 'token' => $token])
-            ->view('seekers-auth.login');
-
-
+        // Redirect user to 'seeker-auth.login' view
+        return response()->json(['message' => 'Registration successful', 'seeker' => $seeker, 'token' => $token, 'redirect' => route('seekers-auth.login')]);
     }
 
     public function updateRegisterSave(Request $request): JsonResponse
