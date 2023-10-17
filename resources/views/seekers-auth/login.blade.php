@@ -48,7 +48,7 @@
               </div>
               @endif
               <div class="form-group">
-                <input name="email" type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                <input name="phone" type="tel" class="form-control form-control-user" id="exampleInputPhone" aria-describedby="phoneHelp" placeholder="Enter Phone Number...">
               </div>
               <div class="form-group">
                 <input name="password" type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">

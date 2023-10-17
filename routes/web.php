@@ -39,14 +39,14 @@ Route::prefix('auth')->group(function () {
     Route::get('seeker/register', [SeekerController::class, 'registerSeeker'])->name('seekerRegister');
     Route::post('seeker/register', [SeekerController::class, 'registerSave'])->name('seekerRegister.save');
 
-    Route::get('seeker/login', [SeekerController::class, 'login'])->name('seekerLogin');
+    // Route::get('seeker/login', [SeekerController::class, 'login'])->name('seekerLogin');
     Route::post('seeker/login', [SeekerController::class, 'loginAction'])->name('seekerLogin.action');
 });
 
 Route::get('seeker/dashboard', [HomeController::class, 'seekerIndex'])->name('seeker-dashboard');
 
 Route::get('/seeker/jobs', [SeekerController::class, 'jobFormView'])->name('admin.jobs.create.view');
-Route::get('/seeker-auth/login', 'SeekerAuthController@login')->name('seeker-auth.login');
+// Route::get('/seeker-auth/login', 'SeekerAuthController@login')->name('seeker-auth.login');
 
 Route::get('/jobs', [SeekerController::class, 'getAllJobs'])->name('seekerAllJobs');
 

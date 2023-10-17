@@ -131,6 +131,27 @@ class SeekerController extends Controller
         return response()->json(['message' => 'Registration successful', 'seeker' => $seeker, 'token' => $token, 'redirect' => route('seekers-auth.login')]);
     }
 
+    public function loginAction(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required|phone',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+        $credentials = $request->only('phone', 'password');
+        $remember = $request->boolean('remember');
+        if (!Auth::guard('seeker')->attempt($credentials, $remember)) {
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
+        $seeker = Auth::guard('seeker')->user();
+        $token = $seeker->createToken('auth-token')->plainTextToken;
+
+        return response()->json(['message' => 'Login successful', 'seeker' => $seeker, 'token' => $token]);
+    }
+
     public function updateRegisterSave(Request $request): JsonResponse
     {
         $seeker = Auth::user();
@@ -179,32 +200,6 @@ class SeekerController extends Controller
         ];
 
         return response()->json($responseData);
-    }
-
-    public function loginAction(Request $request): JsonResponse
-    {
-        $validator = Validator::make($request->all(), [
-            'phone' => 'required|phone',
-            'password' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
-        }
-        $credentials = $request->only('phone', 'password');
-        $remember = $request->boolean('remember');
-        if (!Auth::guard('seeker')->attempt($credentials, $remember)) {
-            return response()->json(['error' => 'Invalid credentials'], 401);
-        }
-        $seeker = Auth::guard('seeker')->user();
-        $token = $seeker->createToken('auth-token')->plainTextToken;
-
-        return response()->json(['message' => 'Login successful', 'seeker' => $seeker, 'token' => $token])
-            ->view('seekers-auth.login');
-
-        // return response()
-        // ->json(['message' => 'Login successful', 'seeker' => $seeker, 'token' => $token])
-        // ->view('seekers.index');
     }
 
     public function logout(Request $request)
